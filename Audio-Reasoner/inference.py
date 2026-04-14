@@ -40,7 +40,7 @@ def get_message(audiopath, prompt):
     }]
     return messages
 
-system = 'You are an audio deep-thinking model. Upon receiving a question, please respond in two parts: <THINK> and <RESPONSE>. The <THINK> section should be further divided into four parts: <PLANNING>, <CAPTION>, <REASONING>, and <SUMMARY>.'
+system = 'You are an audio deep-thinking model. Your task is to determine the natural-language speaking tone of the provided speech audio. Upon receiving a question, please respond in two parts: <THINK> and <RESPONSE>. The <THINK> section should be further divided into four parts: <PLANNING>, <CAPTION>, <REASONING>, and <SUMMARY>.'
 infer_backend = 'pt'
 model = 'qwen2_audio'
 last_model_checkpoint = "/work/u3937558/.cache/huggingface/hub/models--zhifeixie--Audio-Reasoner/snapshots/f38198da84d4e02623a83fa1d005ad31f1d6a6a7" #Please replace it with the path to checkpoint
@@ -51,30 +51,22 @@ def audioreasoner_gen(audiopath, prompt):
 
 def main():
     source_audio_dir = Path("/work/u3937558/SLAM-LLM/exp/s2s_train_v4-Qwen2-0.5b-gpu4-btz3-lr1e-4-fp16-epochs10-whisper_small-latency0-group3/s2s_epoch_3_step_19594/s2s_decode__trp1.2_arp1.2_seed777_greedy/pred_audio/prompt_6")
-    output_file = Path("/work/u3937558/StyleTalk/output")
+    output_file = Path("/work/u3937558/StyleTalk/slam_omni_output_tone")
+    # source_audio_dir = Path("/work/u3937558/StyleTalk/gt_audio")
+    # output_file = Path("/work/u3937558/StyleTalk/gt_audio_labeled_by_audio_reasoner")
 
     audio_list = sorted(os.listdir(source_audio_dir))
 
-    prompt = """You are an expert speech and audio analyst. Your task is to listen to the provided spoken response and classify its speaking style across three dimensions: emotion, speed, and volume. 
+    prompt = """CRITICAL INSTRUCTION: You MUST strictly ignore the spoken content (the linguistic words or transcription). Do not infer the speaker's tone or state from the meaning of the words. Your analysis must be grounded entirely in vocal cues, acoustic features, and paralinguistic signals (such as pitch, energy, intonation, pacing, and timbre).
 
-You MUST strictly use ONLY the predefined categories listed below. Do not use any other words or variations.
+Reasoning Pattern:
+To prevent style hallucination, you must utilize a structured reasoning pattern. Analyze the acoustic features step-by-step before arriving at a conclusion.
 
-[Categories]
-1. Emotion: "neutral", "cheerful", "hopeful", "sad", "friendly", or "unfriendly".
-2. Speed: "slow", "normal", or "fast".
-3. Volume: "quiet", "normal", or "loud".
+Tone Vocabulary:
+Do not output basic, discrete emotion tags (like anger or fear) unless they perfectly match the interactional context. Instead, provide a tone description that reflects the pragmatic or interactional voice function (e.g., understanding, reassuring, apologetic, professional, supportive, confident, cheerful, empathetic, calm, neutral, or flat).
 
-[Instructions]
-1. Carefully analyze the acoustic features, prosody, and tone of the speaker in the audio.
-2. Select the single most appropriate label for each of the three dimensions.
-3. Output the result strictly in JSON format without any markdown blocks or additional explanation.
-
-[Expected Output Format]
-{
-  "emotion": "<selected_emotion>",
-  "speed": "<selected_speed>",
-  "volume": "<selected_volume>"
-}"""
+Output Format:
+Provide a 1-2 word natural-language tone description"""
 
     with open(output_file, "w") as f:
         for audio_file in audio_list:

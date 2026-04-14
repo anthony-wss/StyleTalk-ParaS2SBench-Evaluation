@@ -2,3 +2,7 @@
 whisper/.venv
 audio/
 gt_audio/
+dev.ipynb
+archive/
+data/
+.ipynb_checkpoints/
