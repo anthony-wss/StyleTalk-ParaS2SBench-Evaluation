@@ -1,2 +1,4 @@
 .venv
+whisper/.venv
 audio/
+gt_audio/
