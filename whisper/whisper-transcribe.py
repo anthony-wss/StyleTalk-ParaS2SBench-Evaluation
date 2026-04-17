@@ -5,8 +5,8 @@ import os
 import json
 from tqdm import tqdm
 
-source_audio_dir = Path("/work/u3937558/SLAM-LLM/exp/s2s_train_v4-Qwen2-0.5b-gpu4-btz3-lr1e-4-fp16-epochs10-whisper_small-latency0-group3/s2s_epoch_3_step_19594/s2s_decode__trp1.2_arp1.2_seed777_greedy/pred_audio/prompt_6")
-output_file = Path("/work/u3937558/StyleTalk/slam_omni_transcription")
+source_audio_dir = Path("/work/u3937558/SLAM-LLM/exp/s2s_train_v4-Qwen2-0.5b-gpu2-btz3-lr1e-4-fp16-epochs10-whisper_small-latency0-group1/s2s_epoch_2_step_45797/s2s_decode__trp1.2_arp1.2_seed777_greedy/pred_audio/prompt_6")
+output_file = Path("/work/u3937558/StyleTalk/data/mini_omni_transcription")
 
 device = "cuda:0"
 dtype = torch.float16

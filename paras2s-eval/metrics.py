@@ -2,7 +2,7 @@ import re
 import json
 from pathlib import Path
 
-batch_request_results_path = Path("/work/u3937558/StyleTalk/batch_request_results.jsonl")
+batch_request_results_path = Path("/work/u3937558/StyleTalk/data/mini_omni_batch_request_results.jsonl")
 
 results = open(batch_request_results_path, "r").readlines()
 results = [json.loads(line) for line in results]

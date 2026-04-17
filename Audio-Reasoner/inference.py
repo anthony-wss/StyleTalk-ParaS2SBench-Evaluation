@@ -50,8 +50,8 @@ def audioreasoner_gen(audiopath, prompt):
     return infer_stream(engine, InferRequest(messages=get_message(audiopath, prompt)))
 
 def main():
-    source_audio_dir = Path("/work/u3937558/SLAM-LLM/exp/s2s_train_v4-Qwen2-0.5b-gpu4-btz3-lr1e-4-fp16-epochs10-whisper_small-latency0-group3/s2s_epoch_3_step_19594/s2s_decode__trp1.2_arp1.2_seed777_greedy/pred_audio/prompt_6")
-    output_file = Path("/work/u3937558/StyleTalk/slam_omni_output_tone")
+    source_audio_dir = Path("/work/u3937558/SLAM-LLM/exp/s2s_train_v4-Qwen2-0.5b-gpu2-btz3-lr1e-4-fp16-epochs10-whisper_small-latency0-group1/s2s_epoch_2_step_45797/s2s_decode__trp1.2_arp1.2_seed777_greedy/pred_audio/prompt_6")
+    output_file = Path("/work/u3937558/StyleTalk/data/mini_omni_output_tone")
     # source_audio_dir = Path("/work/u3937558/StyleTalk/gt_audio")
     # output_file = Path("/work/u3937558/StyleTalk/gt_audio_labeled_by_audio_reasoner")
 

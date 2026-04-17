@@ -4,11 +4,11 @@ import re
 import pandas as pd
 from datetime import datetime
 
-model_response_tone_path = Path("/work/u3937558/StyleTalk/slam_omni_output_tone")
-model_response_trans_path = Path("/work/u3937558/StyleTalk/slam_omni_transcription")
+model_response_tone_path = Path("/work/u3937558/StyleTalk/data/mini_omni_output_tone")
+model_response_trans_path = Path("/work/u3937558/StyleTalk/data/mini_omni_transcription")
 styletalk_eval_path = Path("/work/u3937558/StyleTalk/eval.csv")
 judge_prompt_template_path = Path("/work/u3937558/StyleTalk/paras2sbench_prompt.txt")
-batch_request_output_path = Path("/work/u3937558/StyleTalk/batch_request_output.jsonl")
+batch_request_output_path = Path("/work/u3937558/StyleTalk/data/mini_omni_batch_request_output.jsonl")
 
 if __name__ == "__main__":
     # Initialize all the data dict
@@ -56,14 +56,18 @@ if __name__ == "__main__":
     with open(batch_request_output_path, "w") as f:
         for i in range(len(model_res_trans)):
             key = str(i+1)
-            prompt = prompt_template\
-                .replace("CONTEXT", context[key])\
-                .replace("USER_TRANSCRIPTION", user_inp_trans[key])\
-                .replace("USER_EMOTION", user_inp_emo[key])\
-                .replace("USER_SPEED", user_inp_speed[key])\
-                .replace("USER_VOLUME", user_inp_volume[key])\
-                .replace("MODEL_RES_TRANSCRIPTION", model_res_trans[key])\
-                .replace("MODEL_RES_TONE", model_res_tone[key])
+
+            try:
+                prompt = prompt_template\
+                    .replace("CONTEXT", context[key])\
+                    .replace("USER_TRANSCRIPTION", user_inp_trans[key])\
+                    .replace("USER_EMOTION", user_inp_emo[key])\
+                    .replace("USER_SPEED", user_inp_speed[key])\
+                    .replace("USER_VOLUME", user_inp_volume[key])\
+                    .replace("MODEL_RES_TRANSCRIPTION", model_res_trans[key])\
+                    .replace("MODEL_RES_TONE", model_res_tone[key])
+            except KeyError as e:
+                print(f"Sample with key {key} is skipped because transcription or tone missing.")
 
             print(json.dumps({
                 "custom_id": f"request-{timestring}-{key}",
